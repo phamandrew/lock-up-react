@@ -63,6 +63,8 @@ class App extends React.Component {
 		this.checkDoor = this.checkDoor.bind(this);
 	}
 
+// establish Users Home location 
+
 	findHome() {
 
 		const success = (position) => {
@@ -88,6 +90,8 @@ class App extends React.Component {
 
 		// console.log(this.state.atHome);
 	}
+
+// establish whether User is at home and to trigger alert for if User has left home
 
 	checkDoor(){
 
@@ -126,6 +130,9 @@ class App extends React.Component {
 		navigator.geolocation.watchPosition(success, error);
 
 	}
+
+	
+
 	render(){
 		return (
 			<div>
