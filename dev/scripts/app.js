@@ -86,7 +86,7 @@ class App extends React.Component {
 	notHome() {
 		this.setState.atHome = false;
 
-		console.log(this.state.atHome);
+		// console.log(this.state.atHome);
 	}
 
 	checkDoor(){
@@ -103,7 +103,7 @@ class App extends React.Component {
 			
 			if (distanceHomeToCurrent > 200) {
 
-				alert("Hello Guvner");
+				alert("Did you lock your door?");
 
 				updateProfile(true);
 
