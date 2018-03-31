@@ -47,7 +47,7 @@ function distanceBetween(lat1, lon1, lat2, lon2) {
 	return (earthRadiusKm * c) * 1000;
 }
 
-// Component to establish Users Home location 
+
 
 class App extends React.Component {
 
@@ -55,25 +55,43 @@ class App extends React.Component {
 		super();
 
 		this.state = {
-			atHome: false
-			}
+			ready: false,
+			atHome: false,
+			retry: true
 
+		}
+
+		this.userReady = this.userReady.bind(this);
 		this.findHome = this.findHome.bind(this);
 		this.notHome = this.notHome.bind(this);
 		this.checkDoor = this.checkDoor.bind(this);
+		this.restartApp = this.restartApp.bind(this);
+
+	}
+
+// User ready to begin set up
+
+	userReady() {
+		this.setState({
+			ready: true,
+			atHome: false
+		})
 	}
 
 // establish Users Home location 
 
 	findHome() {
-
 		const success = (position) => {
 
 			updateHome(position.coords.longitude, position.coords.latitude);
 
-			this.setState.atHome = true;
-
-			console.log(profile);
+			console.log(profile.home);
+			
+			this.setState({
+				atHome: true
+			})
+			
+			this.checkDoor()
 			
 		}
 
@@ -86,76 +104,86 @@ class App extends React.Component {
 	}
 
 	notHome() {
-		this.setState.atHome = false;
-
-		// console.log(this.state.atHome);
+		this.setState({
+			atHome: false,
+			retry: false,
+			ready: true
+		})
 	}
+
+	
 
 // establish whether User is at home and to trigger alert for if User has left home
 
 	checkDoor(){
 
-		const success = (position) => {
+		let id;
 
-			getProfile();
+		const success = (position) => {
 
 			var location = position.coords;
 
 			const distanceHomeToCurrent = distanceBetween(profile.home.latitude, profile.home.longitude, location.latitude, location.longitude);
 
 			console.log(distanceHomeToCurrent);
-			
+
 			if (distanceHomeToCurrent > 200) {
 
 				alert("Did you lock your door?");
 
-				updateProfile(true);
-
-			}
-
-			// if user is still at home
-
-			else {
+				navigator.geolocation.clearWatch(id);
 
 				updateProfile(false);
-				// console.log(profile);
+
+			}
+			else {
+				updateProfile(true);
 			}
 
-			console.log(profile.leftHome);
 		}
 		function error () {
+			console.log('error')
 
 		}
 
-		navigator.geolocation.watchPosition(success, error);
+		id = navigator.geolocation.watchPosition(success, error);
 
 	}
 
-	
+	restartApp() {
+		this.setState({
+			atHome: true
+		})
+	}
 
 	render(){
 		return (
 			<div>
-				<p>Are you at home right now?</p>
-				<button onClick={this.findHome}>Yes</button>
-				<button onClick={this.notHome}>No</button>
-			</div>
+				<h1>Lock Up</h1>
+				{this.state.ready === false && this.state.atHome === false &&
+					<div>
+					<p>User Setup</p>
+					<button onClick={this.userReady}>Begin</button>
+					</div>}
 
-		)
+				{this.state.ready === true && this.state.atHome === false && <div>
+					<p>Are you at home right now?</p>
+					<div className="buttons">
+						<button onClick={this.findHome}>Yes</button>
+						<button onClick={this.notHome}>No</button>
+					</div>
+				</div>}
 
-
-		// if (this.state.atHome === false) {
-		// 	return(
-		// 		<p>Please try again when you're home.</p>
-		// 	)
-		// }
-		
+				{this.state.atHome === true && <div>
+					<p>App Is Activated</p></div>
+				}
+			
+				{this.state.atHome === false && this.state.retry === false &&  <div><p>Try again when you are home</p>
+					 </div>}
+			</div>)		
 	}
 
-
-	
 }
 
-
-
 ReactDOM.render(<App />, document.getElementById('app'));
+
