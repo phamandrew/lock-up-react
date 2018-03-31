@@ -178,7 +178,7 @@ class App extends React.Component {
 					<p>App Is Activated</p></div>
 				}
 			
-				{this.state.atHome === false && this.state.retry === false &&  <div><p>Try again when you are home</p>
+				{this.state.atHome === false && this.state.retry === false &&  <div><p>Try again when you are home.</p>
 					 </div>}
 			</div>)		
 	}
