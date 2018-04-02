@@ -84,8 +84,6 @@ class App extends React.Component {
 		const success = (position) => {
 
 			updateHome(position.coords.longitude, position.coords.latitude);
-
-			console.log(profile.home);
 			
 			this.setState({
 				atHome: true
@@ -124,8 +122,6 @@ class App extends React.Component {
 			var location = position.coords;
 
 			const distanceHomeToCurrent = distanceBetween(profile.home.latitude, profile.home.longitude, location.latitude, location.longitude);
-
-			console.log(distanceHomeToCurrent);
 
 			if (distanceHomeToCurrent > 200) {
 
