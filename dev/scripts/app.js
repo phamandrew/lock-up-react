@@ -123,7 +123,7 @@ class App extends React.Component {
 
 			const distanceHomeToCurrent = distanceBetween(profile.home.latitude, profile.home.longitude, location.latitude, location.longitude);
 
-			if (distanceHomeToCurrent > 200) {
+			if (distanceHomeToCurrent > 100) {
 
 				alert("Did you lock your door?");
 
@@ -138,7 +138,7 @@ class App extends React.Component {
 
 		}
 		function error () {
-			console.log('error')
+			console.log('error');
 
 		}
 
@@ -176,7 +176,7 @@ class App extends React.Component {
 			
 				{this.state.atHome === false && this.state.retry === false &&  <div><p>Try again when you are home.</p>
 					 </div>}
-			</div>)		
+			</div>)	
 	}
 
 }
